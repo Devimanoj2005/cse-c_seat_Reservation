@@ -1,73 +1,40 @@
-# Welcome to your Lovable project
+# Classroom Seat Reservation System
 
-## Project info
+## Problem
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+I am a **day scholar** in my college. Every day when I reach the classroom, most of the seats are already taken by **hostellers** who come earlier and occupy the seats first. Because of this, day scholars often end up sitting in uncomfortable or back benches even if they prefer other seats.
 
-## How can I edit this code?
+This creates an **unfair seating situation** for students who travel from home and arrive later.
 
-There are several ways of editing your application.
+## Solution
 
-**Use Lovable**
+To overcome this issue, I introduced a **Classroom Seat Reservation System**.  
+This system allows **CSE-C girls** to reserve their seats digitally before coming to class.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+Seat booking opens **every day at 7:00 AM**, giving all students a fair chance to book their preferred seat.
 
-Changes made via Lovable will be committed automatically to this repo.
+## Classroom Layout
 
-**Use your preferred IDE**
+- Total Benches: **12**
+- Left Side: **6 benches**
+- Right Side: **6 benches**
+- Each bench can accommodate **2 students**
+- Total seating capacity: **24 students**
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## Features
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- View available classroom seats
+- Book a seat after **7:00 AM**
+- Cancel seat booking
+- Admin seat management
+- Real-time seat availability
 
-Follow these steps:
+## Tech Stack
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+- **Frontend:** (React / HTML / CSS)
+- **Backend:** Node.js + Express
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
 
-# Step 3: Install the necessary dependencies.
-npm i
+## Goal
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+The goal of this project is to **create a fair and organized seating system** for students and avoid conflicts related to seat availability in the classroom.
