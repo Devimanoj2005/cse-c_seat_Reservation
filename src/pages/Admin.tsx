@@ -15,8 +15,8 @@ interface BookingWithDetails {
   user_id: string;
   booking_date: string;
   created_at: string;
-  seats: { bench_label: string; side: string; position: number };
-  profiles: { username: string; full_name: string; roll_number: string };
+  seats: { bench_label: string; side: string; position: number } | null;
+  profile?: { username: string; full_name: string; roll_number: string } | null;
 }
 
 export default function Admin() {
@@ -27,12 +27,27 @@ export default function Admin() {
   const today = format(new Date(), "yyyy-MM-dd");
 
   const fetchBookings = useCallback(async () => {
-    const { data } = await supabase
+    const { data: bookingsData } = await supabase
       .from("bookings")
       .select("*, seats(*)")
       .eq("booking_date", today)
       .order("created_at", { ascending: true });
-    if (data) setBookings(data as unknown as BookingWithDetails[]);
+
+    if (!bookingsData) return;
+
+    // Fetch profiles for all booked users
+    const userIds = [...new Set(bookingsData.map((b) => b.user_id))];
+    const { data: profilesData } = await supabase
+      .from("profiles")
+      .select("user_id, username, full_name, roll_number")
+      .in("user_id", userIds);
+
+    const profileMap = new Map(profilesData?.map((p) => [p.user_id, p]) ?? []);
+    const enriched = bookingsData.map((b) => ({
+      ...b,
+      profile: profileMap.get(b.user_id) ?? null,
+    }));
+    setBookings(enriched as unknown as BookingWithDetails[]);
   }, [today]);
 
   useEffect(() => {
