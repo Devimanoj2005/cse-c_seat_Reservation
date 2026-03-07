@@ -11,7 +11,7 @@ This creates an **unfair seating situation** for students who travel from home a
 To overcome this issue, I introduced a **Classroom Seat Reservation System**.  
 This system allows **CSE-C girls** to reserve their seats digitally before coming to class.
 
-Seat booking opens **every day at 7:00 AM**, giving all students a fair chance to book their preferred seat.
+Seat booking opens **every day at 7:00 AM and close at 9;00**, giving all students a fair chance to book their preferred seat.
 
 ## Classroom Layout
 
