@@ -30,60 +30,62 @@ export default function Login() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-md shadow-xl border-0">
-        <CardContent className="pt-8 pb-8 px-8">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-50 p-4">
+      <Card className="w-full max-w-md shadow-2xl border-2 border-blue-100">
+        <CardContent className="pt-10 pb-10 px-10">
           <div className="flex flex-col items-center mb-8">
-            <div className="w-14 h-14 bg-primary rounded-xl flex items-center justify-center mb-4 shadow-lg">
-              <GraduationCap className="w-7 h-7 text-primary-foreground" />
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-5 shadow-xl">
+              <GraduationCap className="w-8 h-8 text-white" />
             </div>
-            <h1 className="text-2xl font-extrabold tracking-tight">Welcome Back</h1>
-            <p className="text-muted-foreground mt-1">Sign in to book your seat</p>
+            <h1 className="text-3xl font-extrabold tracking-tight text-slate-800">Welcome Back</h1>
+            <p className="text-slate-600 mt-2 text-center">CSE-C Girls Seat Reservation System</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="email" className="font-semibold">Email</Label>
+              <Label htmlFor="email" className="font-bold text-slate-700">Email Address</Label>
               <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-blue-500" />
                 <Input
                   id="email"
                   type="email"
                   placeholder="your@email.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="pl-10"
+                  className="pl-11 h-12 border-2 border-slate-200 focus:border-blue-500"
                   required
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password" className="font-semibold">Password</Label>
+              <Label htmlFor="password" className="font-bold text-slate-700">Password</Label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-blue-500" />
                 <Input
                   id="password"
                   type="password"
-                  placeholder="Enter password"
+                  placeholder="Enter your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="pl-10"
+                  className="pl-11 h-12 border-2 border-slate-200 focus:border-blue-500"
                   required
                 />
               </div>
             </div>
 
-            <Button type="submit" className="w-full h-12 text-base font-semibold" disabled={isLoading}>
+            <Button type="submit" className="w-full h-13 text-base font-bold bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg" disabled={isLoading}>
               {isLoading ? "Signing in..." : "Sign In"}
-              {!isLoading && <ArrowRight className="ml-2 w-4 h-4" />}
+              {!isLoading && <ArrowRight className="ml-2 w-5 h-5" />}
             </Button>
           </form>
 
-          <p className="text-center mt-6 text-sm text-muted-foreground">
-            Don't have an account?{" "}
-            <Link to="/register" className="text-primary font-semibold hover:underline">Register</Link>
-          </p>
+          <div className="mt-8 text-center">
+            <p className="text-sm text-slate-600">
+              Don't have an account?{" "}
+              <Link to="/register" className="text-blue-600 font-bold hover:text-blue-700 hover:underline">Create Account</Link>
+            </p>
+          </div>
         </CardContent>
       </Card>
     </div>

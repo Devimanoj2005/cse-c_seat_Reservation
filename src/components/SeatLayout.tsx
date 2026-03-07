@@ -46,10 +46,10 @@ export default function SeatLayout({ seats, bookings, currentUserId, selectedSea
   };
 
   const seatStyles: Record<string, string> = {
-    available: "bg-card border-2 border-seat-available text-seat-available cursor-pointer hover:bg-accent",
-    booked: "bg-muted border-2 border-muted text-muted-foreground cursor-not-allowed opacity-60",
-    selected: "bg-primary border-2 border-primary text-primary-foreground cursor-pointer animate-pulse-seat",
-    yours: "bg-seat-yours/10 border-2 border-seat-yours text-seat-yours cursor-pointer",
+    available: "bg-green-500 border-2 border-green-600 text-white cursor-pointer hover:bg-green-600 shadow-sm hover:shadow-md transition-all",
+    booked: "bg-red-500 border-2 border-red-600 text-white cursor-not-allowed opacity-90",
+    selected: "bg-blue-500 border-2 border-blue-600 text-white cursor-pointer animate-pulse-seat shadow-lg",
+    yours: "bg-blue-500 border-2 border-blue-600 text-white cursor-pointer shadow-md",
   };
 
   const renderSeat = (seat: Seat) => {
@@ -62,41 +62,55 @@ export default function SeatLayout({ seats, bookings, currentUserId, selectedSea
         onClick={() => isClickable && onSeatClick(seat)}
         disabled={!isClickable}
         className={cn(
-          "w-10 h-10 rounded-md flex items-center justify-center transition-all",
+          "w-12 h-12 rounded-lg flex flex-col items-center justify-center transition-all font-bold text-xs",
           seatStyles[status]
         )}
-        title={`${seat.bench_label}-${seat.position}`}
+        title={`${seat.bench_label}-${seat.position} - ${status === "available" ? "Available" : status === "booked" ? "Booked" : "Your Seat"}`}
       >
-        {status === "booked" ? <Lock className="w-4 h-4" /> : <LockOpen className="w-4 h-4" />}
+        <span className="text-[10px] leading-tight">{seat.bench_label}</span>
+        <span className="text-sm leading-tight">{seat.position}</span>
       </button>
     );
   };
 
   const renderBenches = (benchList: [string, Seat[]][]) =>
     benchList.map(([label, seats]) => (
-      <div key={label} className="flex flex-col items-center gap-1">
-        <span className="text-xs font-semibold text-primary">{label}</span>
-        <div className="flex gap-1 p-2 bg-muted/50 rounded-lg border border-border">
+      <div key={label} className="flex flex-col items-center gap-2 mb-3">
+        <div className="bg-gradient-to-r from-slate-100 to-slate-200 px-4 py-1.5 rounded-full border border-slate-300">
+          <span className="text-xs font-bold text-slate-700">Bench {label}</span>
+        </div>
+        <div className="flex gap-2 p-3 bg-slate-50 rounded-xl border-2 border-slate-200 shadow-sm">
           {seats.sort((a, b) => a.position - b.position).map(renderSeat)}
         </div>
       </div>
     ));
 
   return (
-    <div className="bg-card rounded-xl border border-border p-6">
-      <div className="grid grid-cols-2 gap-8">
-        <div className="flex flex-col items-center gap-4">
-          <span className="text-xs font-bold tracking-widest text-muted-foreground uppercase">Left Side</span>
+    <div className="bg-gradient-to-b from-slate-50 to-white rounded-2xl border-2 border-slate-200 p-8 shadow-lg">
+      <div className="mb-6 text-center">
+        <div className="inline-block bg-slate-800 text-white px-8 py-3 rounded-xl text-base font-bold shadow-md">
+          Classroom Layout - CSE-C Girls
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-12">
+        <div className="flex flex-col items-center">
+          <div className="mb-4 bg-blue-100 px-6 py-2 rounded-full border-2 border-blue-300">
+            <span className="text-sm font-bold tracking-wide text-blue-800">LEFT SIDE</span>
+          </div>
           {renderBenches(benches(leftSeats))}
         </div>
-        <div className="flex flex-col items-center gap-4">
-          <span className="text-xs font-bold tracking-widest text-muted-foreground uppercase">Right Side</span>
+        <div className="flex flex-col items-center">
+          <div className="mb-4 bg-blue-100 px-6 py-2 rounded-full border-2 border-blue-300">
+            <span className="text-sm font-bold tracking-wide text-blue-800">RIGHT SIDE</span>
+          </div>
           {renderBenches(benches(rightSeats))}
         </div>
       </div>
-      <div className="mt-6 flex justify-center">
-        <div className="bg-foreground text-background px-6 py-2 rounded-full text-sm font-semibold flex items-center gap-2">
-          📺 Teacher's Desk / Whiteboard
+
+      <div className="mt-8 flex justify-center">
+        <div className="bg-gradient-to-r from-slate-700 to-slate-900 text-white px-10 py-3 rounded-xl text-sm font-bold shadow-lg border-2 border-slate-600">
+          Teacher's Desk / Whiteboard
         </div>
       </div>
     </div>

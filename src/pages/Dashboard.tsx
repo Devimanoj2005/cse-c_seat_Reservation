@@ -32,7 +32,8 @@ export default function Dashboard() {
   const [submitting, setSubmitting] = useState(false);
   const today = format(new Date(), "yyyy-MM-dd");
   const now = new Date();
-  const bookingOpen = now.getHours() >= 7;
+  const currentHour = now.getHours();
+  const bookingOpen = currentHour >= 7 && currentHour < 9;
 
   const fetchData = useCallback(async () => {
     const [{ data: seatsData }, { data: bookingsData }] = await Promise.all([
@@ -54,6 +55,10 @@ export default function Dashboard() {
   const myBooking = bookings.find((b) => b.user_id === user?.id);
 
   const handleSeatClick = (seat: Seat) => {
+    if (!bookingOpen) {
+      toast.error("Booking is only available between 7:00 AM and 9:00 AM");
+      return;
+    }
     if (myBooking && myBooking.seat_id !== seat.id) {
       toast.error("You already have a booking today. Cancel it first.");
       return;
@@ -62,6 +67,10 @@ export default function Dashboard() {
   };
 
   const handleBook = async () => {
+    if (!bookingOpen) {
+      toast.error("Booking is only available between 7:00 AM and 9:00 AM");
+      return;
+    }
     if (!selectedSeatId || !user) return;
     setSubmitting(true);
     try {
@@ -130,25 +139,38 @@ export default function Dashboard() {
       </header>
 
       {/* Status bar */}
-      <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          {bookingOpen ? (
-            <Badge className="bg-seat-available/10 text-seat-available border-seat-available">
-              <Sun className="w-3 h-3 mr-1" /> BOOKING OPEN
-            </Badge>
-          ) : (
-            <Badge variant="destructive">
-              <Clock className="w-3 h-3 mr-1" /> BOOKING CLOSED
-            </Badge>
-          )}
-          <span className="text-sm text-muted-foreground">
-            Date: <strong>{format(new Date(), "EEEE, MMMM d, yyyy")}</strong>
-          </span>
-        </div>
-        <div className="flex items-center gap-4 text-xs">
-          <span className="flex items-center gap-1"><span className="w-3 h-3 rounded border-2 border-seat-available" /> Available</span>
-          <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-muted border-2 border-muted" /> Booked</span>
-          <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-primary border-2 border-primary" /> Selected</span>
+      <div className="max-w-4xl mx-auto px-4 py-4">
+        <div className="bg-card rounded-lg border border-border p-4 shadow-sm">
+          <div className="flex items-center justify-between flex-wrap gap-3">
+            <div className="flex items-center gap-3">
+              {bookingOpen ? (
+                <Badge className="bg-green-50 text-green-700 border border-green-300 hover:bg-green-50">
+                  <Sun className="w-3 h-3 mr-1" /> BOOKING OPEN (7:00 AM - 9:00 AM)
+                </Badge>
+              ) : (
+                <Badge className="bg-red-50 text-red-700 border border-red-300 hover:bg-red-50">
+                  <Clock className="w-3 h-3 mr-1" /> BOOKING CLOSED
+                </Badge>
+              )}
+              <span className="text-sm text-muted-foreground">
+                <strong>{format(new Date(), "EEEE, MMMM d, yyyy")}</strong>
+              </span>
+            </div>
+            <div className="flex items-center gap-4 text-xs font-medium">
+              <span className="flex items-center gap-2">
+                <span className="w-4 h-4 rounded bg-green-500 border-2 border-green-600" />
+                Available
+              </span>
+              <span className="flex items-center gap-2">
+                <span className="w-4 h-4 rounded bg-red-500 border-2 border-red-600" />
+                Booked
+              </span>
+              <span className="flex items-center gap-2">
+                <span className="w-4 h-4 rounded bg-blue-500 border-2 border-blue-600" />
+                Your Seat
+              </span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -163,24 +185,47 @@ export default function Dashboard() {
           bookingOpen={bookingOpen}
         />
 
-        {/* Actions */}
-        <div className="mt-4 flex justify-center gap-3">
-          {selectedSeatId && !myBooking && (
-            <Button onClick={handleBook} disabled={submitting} className="px-8">
-              {submitting ? "Booking..." : "Book Seat"}
-            </Button>
-          )}
-          {myBooking && (
-            <Button variant="destructive" onClick={handleCancel} disabled={submitting}>
+        {/* My Booking Section */}
+        {myBooking && (
+          <div className="mt-6 bg-blue-50 border-2 border-blue-200 rounded-xl p-6 text-center">
+            <h3 className="text-lg font-bold text-blue-900 mb-2">Your Booking</h3>
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <div className="bg-blue-500 text-white px-6 py-3 rounded-lg font-bold text-xl">
+                {seats.find(s => s.id === myBooking.seat_id)?.bench_label}-{seats.find(s => s.id === myBooking.seat_id)?.position}
+              </div>
+            </div>
+            <p className="text-sm text-blue-700 mb-4">
+              Side: <strong className="capitalize">{seats.find(s => s.id === myBooking.seat_id)?.side}</strong>
+            </p>
+            <Button variant="destructive" onClick={handleCancel} disabled={submitting} size="lg">
               {submitting ? "Cancelling..." : "Cancel My Booking"}
             </Button>
-          )}
-        </div>
+          </div>
+        )}
 
-        {myBooking && (
-          <p className="text-center mt-3 text-sm text-seat-yours font-semibold">
-            ✅ You have booked seat {seats.find(s => s.id === myBooking.seat_id)?.bench_label}-{seats.find(s => s.id === myBooking.seat_id)?.position}
-          </p>
+        {/* Book Seat Button */}
+        {!myBooking && selectedSeatId && (
+          <div className="mt-6 text-center">
+            <Button
+              onClick={handleBook}
+              disabled={submitting || !bookingOpen}
+              size="lg"
+              className="px-12 py-6 text-lg font-semibold"
+            >
+              {submitting ? "Booking..." : "Confirm Booking"}
+            </Button>
+          </div>
+        )}
+
+        {!bookingOpen && !myBooking && (
+          <div className="mt-6 bg-amber-50 border-2 border-amber-200 rounded-xl p-6 text-center">
+            <Clock className="w-12 h-12 mx-auto mb-3 text-amber-600" />
+            <h3 className="text-lg font-bold text-amber-900 mb-2">Booking Currently Closed</h3>
+            <p className="text-sm text-amber-700">
+              Seat booking is available every day between <strong>7:00 AM and 9:00 AM</strong>.
+              Please come back during this time to reserve your seat.
+            </p>
+          </div>
         )}
       </div>
 

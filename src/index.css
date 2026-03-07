@@ -6,31 +6,31 @@
 
 @layer base {
   :root {
-    --background: 230 25% 96%;
-    --foreground: 230 25% 10%;
+    --background: 220 20% 97%;
+    --foreground: 220 15% 15%;
     --card: 0 0% 100%;
-    --card-foreground: 230 25% 10%;
+    --card-foreground: 220 15% 15%;
     --popover: 0 0% 100%;
-    --popover-foreground: 230 25% 10%;
-    --primary: 245 58% 51%;
+    --popover-foreground: 220 15% 15%;
+    --primary: 210 95% 48%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 245 30% 95%;
-    --secondary-foreground: 245 58% 51%;
-    --muted: 230 15% 92%;
-    --muted-foreground: 230 10% 45%;
-    --accent: 245 30% 95%;
-    --accent-foreground: 245 58% 51%;
+    --secondary: 210 20% 95%;
+    --secondary-foreground: 210 95% 48%;
+    --muted: 220 15% 93%;
+    --muted-foreground: 220 10% 45%;
+    --accent: 210 20% 95%;
+    --accent-foreground: 210 95% 48%;
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
-    --border: 230 15% 88%;
-    --input: 230 15% 88%;
-    --ring: 245 58% 51%;
+    --border: 220 15% 88%;
+    --input: 220 15% 88%;
+    --ring: 210 95% 48%;
     --radius: 0.75rem;
 
-    --seat-available: 145 63% 42%;
-    --seat-booked: 230 15% 80%;
-    --seat-selected: 245 58% 51%;
-    --seat-yours: 35 92% 50%;
+    --seat-available: 142 71% 45%;
+    --seat-booked: 0 72% 51%;
+    --seat-selected: 210 95% 48%;
+    --seat-yours: 210 95% 48%;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
