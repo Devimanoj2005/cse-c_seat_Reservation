@@ -126,8 +126,8 @@ export default function Admin() {
                   {bookings.map((b, i) => (
                     <TableRow key={b.id}>
                       <TableCell>{i + 1}</TableCell>
-                      <TableCell className="font-medium">{b.profiles?.full_name || b.profiles?.username}</TableCell>
-                      <TableCell>{b.profiles?.roll_number}</TableCell>
+                      <TableCell className="font-medium">{b.profile?.full_name || b.profile?.username}</TableCell>
+                      <TableCell>{b.profile?.roll_number}</TableCell>
                       <TableCell>{b.seats?.bench_label}-{b.seats?.position}</TableCell>
                       <TableCell className="capitalize">{b.seats?.side}</TableCell>
                       <TableCell>{format(new Date(b.created_at), "h:mm a")}</TableCell>
