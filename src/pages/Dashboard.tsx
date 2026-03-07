@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/integrations/supabase/client";
 import SeatLayout from "@/components/SeatLayout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
