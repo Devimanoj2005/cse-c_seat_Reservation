@@ -29,7 +29,7 @@ export default function Admin() {
   const fetchBookings = useCallback(async () => {
     const { data } = await supabase
       .from("bookings")
-      .select("*, seats(*), profiles!bookings_user_id_fkey(*)")
+      .select("*, seats(*)")
       .eq("booking_date", today)
       .order("created_at", { ascending: true });
     if (data) setBookings(data as unknown as BookingWithDetails[]);
