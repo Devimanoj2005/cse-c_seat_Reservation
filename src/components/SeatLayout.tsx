@@ -1,4 +1,3 @@
-import { Lock, LockOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface Seat {
@@ -27,6 +26,7 @@ interface SeatLayoutProps {
 export default function SeatLayout({ seats, bookings, currentUserId, selectedSeatId, onSeatClick, bookingOpen }: SeatLayoutProps) {
   const leftSeats = seats.filter((s) => s.side === "left");
   const rightSeats = seats.filter((s) => s.side === "right");
+  const farRightSeats = seats.filter((s) => s.side === "far-right");
 
   const benches = (sideSeats: Seat[]) => {
     const grouped: Record<string, Seat[]> = {};
@@ -93,19 +93,35 @@ export default function SeatLayout({ seats, bookings, currentUserId, selectedSea
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-12">
+      <div className="flex gap-8 justify-center">
+        {/* Left Side - 7 benches for girls */}
         <div className="flex flex-col items-center">
-          <div className="mb-4 bg-blue-100 px-6 py-2 rounded-full border-2 border-blue-300">
-            <span className="text-sm font-bold tracking-wide text-blue-800">LEFT SIDE</span>
+          <div className="mb-4 bg-pink-100 px-6 py-2 rounded-full border-2 border-pink-300">
+            <span className="text-sm font-bold tracking-wide text-pink-800">LEFT SIDE (Girls)</span>
           </div>
           {renderBenches(benches(leftSeats))}
         </div>
+
+        {/* Right Side - 7 benches for girls */}
         <div className="flex flex-col items-center">
-          <div className="mb-4 bg-blue-100 px-6 py-2 rounded-full border-2 border-blue-300">
-            <span className="text-sm font-bold tracking-wide text-blue-800">RIGHT SIDE</span>
+          <div className="mb-4 bg-pink-100 px-6 py-2 rounded-full border-2 border-pink-300">
+            <span className="text-sm font-bold tracking-wide text-pink-800">RIGHT SIDE (Girls)</span>
           </div>
           {renderBenches(benches(rightSeats))}
         </div>
+
+        {/* Far Right - 1 bench for girls, rest for boys */}
+        {farRightSeats.length > 0 && (
+          <div className="flex flex-col items-center">
+            <div className="mb-4 bg-pink-100 px-6 py-2 rounded-full border-2 border-pink-300">
+              <span className="text-sm font-bold tracking-wide text-pink-800">FAR RIGHT (Girls)</span>
+            </div>
+            {renderBenches(benches(farRightSeats))}
+            <div className="mt-4 bg-slate-200 px-4 py-2 rounded-lg border border-slate-300 text-center">
+              <span className="text-xs font-semibold text-slate-600">Remaining benches<br/>allotted for Boys</span>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="mt-8 flex justify-center">
