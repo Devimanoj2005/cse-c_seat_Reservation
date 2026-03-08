@@ -16,6 +16,12 @@ interface Seat {
   position: number;
 }
 
+interface Profile {
+  user_id: string;
+  username: string;
+  full_name: string;
+}
+
 interface Booking {
   id: string;
   seat_id: string;
@@ -28,6 +34,7 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [seats, setSeats] = useState<Seat[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
+  const [profiles, setProfiles] = useState<Profile[]>([]);
   const [selectedSeatId, setSelectedSeatId] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const today = format(new Date(), "yyyy-MM-dd");
@@ -36,12 +43,14 @@ export default function Dashboard() {
   const bookingOpen = currentHour >= 7 && currentHour < 9;
 
   const fetchData = useCallback(async () => {
-    const [{ data: seatsData }, { data: bookingsData }] = await Promise.all([
+    const [{ data: seatsData }, { data: bookingsData }, { data: profilesData }] = await Promise.all([
       supabase.from("seats").select("*"),
       supabase.from("bookings").select("*").eq("booking_date", today),
+      supabase.from("profiles").select("user_id, username, full_name"),
     ]);
     if (seatsData) setSeats(seatsData);
     if (bookingsData) setBookings(bookingsData);
+    if (profilesData) setProfiles(profilesData);
   }, [today]);
 
   useEffect(() => {
@@ -179,6 +188,7 @@ export default function Dashboard() {
         <SeatLayout
           seats={seats}
           bookings={bookings}
+          profiles={profiles}
           currentUserId={user?.id ?? null}
           selectedSeatId={selectedSeatId}
           onSeatClick={handleSeatClick}
