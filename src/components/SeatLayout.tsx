@@ -14,16 +14,23 @@ interface Booking {
   booking_date: string;
 }
 
+interface Profile {
+  user_id: string;
+  username: string;
+  full_name: string;
+}
+
 interface SeatLayoutProps {
   seats: Seat[];
   bookings: Booking[];
+  profiles: Profile[];
   currentUserId: string | null;
   selectedSeatId: string | null;
   onSeatClick: (seat: Seat) => void;
   bookingOpen: boolean;
 }
 
-export default function SeatLayout({ seats, bookings, currentUserId, selectedSeatId, onSeatClick, bookingOpen }: SeatLayoutProps) {
+export default function SeatLayout({ seats, bookings, profiles, currentUserId, selectedSeatId, onSeatClick, bookingOpen }: SeatLayoutProps) {
   const leftSeats = seats.filter((s) => s.side === "left");
   const rightSeats = seats.filter((s) => s.side === "right");
   const farRightSeats = seats.filter((s) => s.side === "far-right");
@@ -45,6 +52,13 @@ export default function SeatLayout({ seats, bookings, currentUserId, selectedSea
     return "available";
   };
 
+  const getBookerName = (seat: Seat): string | null => {
+    const booking = bookings.find((b) => b.seat_id === seat.id);
+    if (!booking) return null;
+    const profile = profiles.find((p) => p.user_id === booking.user_id);
+    return profile?.username || profile?.full_name || null;
+  };
+
   const seatStyles: Record<string, string> = {
     available: "bg-green-500 border-2 border-green-600 text-white cursor-pointer hover:bg-green-600 shadow-sm hover:shadow-md transition-all",
     booked: "bg-red-500 border-2 border-red-600 text-white cursor-not-allowed opacity-90",
@@ -55,32 +69,39 @@ export default function SeatLayout({ seats, bookings, currentUserId, selectedSea
   const renderSeat = (seat: Seat) => {
     const status = getSeatStatus(seat);
     const isClickable = bookingOpen && (status === "available" || status === "selected" || status === "yours");
+    const bookerName = getBookerName(seat);
 
     return (
-      <button
-        key={seat.id}
-        onClick={() => isClickable && onSeatClick(seat)}
-        disabled={!isClickable}
-        className={cn(
-          "w-12 h-12 rounded-lg flex flex-col items-center justify-center transition-all font-bold text-xs",
-          seatStyles[status]
+      <div key={seat.id} className="flex flex-col items-center gap-1">
+        <button
+          onClick={() => isClickable && onSeatClick(seat)}
+          disabled={!isClickable}
+          className={cn(
+            "w-14 h-14 rounded-lg flex flex-col items-center justify-center transition-all font-bold text-xs",
+            seatStyles[status]
+          )}
+          title={`${seat.bench_label}-${seat.position} - ${status === "available" ? "Available" : status === "booked" ? `Booked by ${bookerName}` : "Your Seat"}`}
+        >
+          <span className="text-[10px] leading-tight">{seat.bench_label}</span>
+          <span className="text-sm leading-tight">{seat.position}</span>
+        </button>
+        {bookerName && (
+          <span className="text-[9px] font-semibold text-slate-600 max-w-14 truncate text-center" title={bookerName}>
+            {bookerName}
+          </span>
         )}
-        title={`${seat.bench_label}-${seat.position} - ${status === "available" ? "Available" : status === "booked" ? "Booked" : "Your Seat"}`}
-      >
-        <span className="text-[10px] leading-tight">{seat.bench_label}</span>
-        <span className="text-sm leading-tight">{seat.position}</span>
-      </button>
+      </div>
     );
   };
 
   const renderBenches = (benchList: [string, Seat[]][]) =>
-    benchList.map(([label, seats]) => (
+    benchList.map(([label, benchSeats]) => (
       <div key={label} className="flex flex-col items-center gap-2 mb-3">
         <div className="bg-gradient-to-r from-slate-100 to-slate-200 px-4 py-1.5 rounded-full border border-slate-300">
           <span className="text-xs font-bold text-slate-700">Bench {label}</span>
         </div>
         <div className="flex gap-2 p-3 bg-slate-50 rounded-xl border-2 border-slate-200 shadow-sm">
-          {seats.sort((a, b) => a.position - b.position).map(renderSeat)}
+          {benchSeats.sort((a, b) => a.position - b.position).map(renderSeat)}
         </div>
       </div>
     ));
@@ -94,7 +115,6 @@ export default function SeatLayout({ seats, bookings, currentUserId, selectedSea
       </div>
 
       <div className="flex gap-8 justify-center">
-        {/* Left Side - 7 benches for girls */}
         <div className="flex flex-col items-center">
           <div className="mb-4 bg-pink-100 px-6 py-2 rounded-full border-2 border-pink-300">
             <span className="text-sm font-bold tracking-wide text-pink-800">LEFT SIDE (Girls)</span>
@@ -102,7 +122,6 @@ export default function SeatLayout({ seats, bookings, currentUserId, selectedSea
           {renderBenches(benches(leftSeats))}
         </div>
 
-        {/* Right Side - 7 benches for girls */}
         <div className="flex flex-col items-center">
           <div className="mb-4 bg-pink-100 px-6 py-2 rounded-full border-2 border-pink-300">
             <span className="text-sm font-bold tracking-wide text-pink-800">RIGHT SIDE (Girls)</span>
@@ -110,7 +129,6 @@ export default function SeatLayout({ seats, bookings, currentUserId, selectedSea
           {renderBenches(benches(rightSeats))}
         </div>
 
-        {/* Far Right - 1 bench for girls, rest for boys */}
         {farRightSeats.length > 0 && (
           <div className="flex flex-col items-center">
             <div className="mb-4 bg-pink-100 px-6 py-2 rounded-full border-2 border-pink-300">
