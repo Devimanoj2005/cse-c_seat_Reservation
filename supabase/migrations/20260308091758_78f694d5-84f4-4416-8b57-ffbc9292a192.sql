@@ -1,0 +1,1 @@
+ALTER TABLE public.bookings ADD CONSTRAINT unique_seat_per_date UNIQUE (seat_id, booking_date);
