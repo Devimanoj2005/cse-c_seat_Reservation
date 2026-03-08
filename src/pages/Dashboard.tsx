@@ -188,6 +188,7 @@ export default function Dashboard() {
         <SeatLayout
           seats={seats}
           bookings={bookings}
+          profiles={profiles}
           currentUserId={user?.id ?? null}
           selectedSeatId={selectedSeatId}
           onSeatClick={handleSeatClick}
