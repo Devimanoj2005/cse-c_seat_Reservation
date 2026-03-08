@@ -40,7 +40,7 @@ export default function Dashboard() {
   const today = format(new Date(), "yyyy-MM-dd");
   const now = new Date();
   const currentHour = now.getHours();
-  const bookingOpen = currentHour >= 7 && currentHour < 9;
+  const bookingOpen = true; // Temporarily open for testing (was: currentHour >= 7 && currentHour < 9)
 
   const fetchData = useCallback(async () => {
     const [{ data: seatsData }, { data: bookingsData }, { data: profilesData }] = await Promise.all([
