@@ -34,6 +34,7 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [seats, setSeats] = useState<Seat[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
+  const [profiles, setProfiles] = useState<Profile[]>([]);
   const [selectedSeatId, setSelectedSeatId] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const today = format(new Date(), "yyyy-MM-dd");
