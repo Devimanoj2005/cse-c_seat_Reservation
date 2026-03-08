@@ -123,8 +123,8 @@ export default function Dashboard() {
           </div>
           <div className="flex items-center gap-3">
             <div className="text-right text-xs">
-              <div className="font-semibold">{format(now, "h:mm a")}</div>
-              <div className="text-muted-foreground">{format(now, "EEEE, MMM d")}</div>
+              <div className="font-semibold">{profile?.full_name || profile?.username}</div>
+              <div className="text-muted-foreground">{profile?.roll_number}</div>
             </div>
             {profile?.is_admin && (
               <Button variant="outline" size="sm" onClick={() => navigate("/admin")}>
