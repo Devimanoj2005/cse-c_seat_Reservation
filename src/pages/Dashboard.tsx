@@ -16,6 +16,12 @@ interface Seat {
   position: number;
 }
 
+interface Profile {
+  user_id: string;
+  username: string;
+  full_name: string;
+}
+
 interface Booking {
   id: string;
   seat_id: string;
