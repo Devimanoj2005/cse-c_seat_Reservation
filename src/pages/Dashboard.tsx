@@ -43,12 +43,14 @@ export default function Dashboard() {
   const bookingOpen = currentHour >= 7 && currentHour < 9;
 
   const fetchData = useCallback(async () => {
-    const [{ data: seatsData }, { data: bookingsData }] = await Promise.all([
+    const [{ data: seatsData }, { data: bookingsData }, { data: profilesData }] = await Promise.all([
       supabase.from("seats").select("*"),
       supabase.from("bookings").select("*").eq("booking_date", today),
+      supabase.from("profiles").select("user_id, username, full_name"),
     ]);
     if (seatsData) setSeats(seatsData);
     if (bookingsData) setBookings(bookingsData);
+    if (profilesData) setProfiles(profilesData);
   }, [today]);
 
   useEffect(() => {
