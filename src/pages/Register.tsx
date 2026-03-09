@@ -4,12 +4,11 @@ import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { GraduationCap, User, Lock, ArrowRight, Hash, Mail } from "lucide-react";
+import { GraduationCap, User, Lock, ArrowRight, Hash } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 
 export default function Register() {
-  const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [fullName, setFullName] = useState("");
   const [rollNumber, setRollNumber] = useState("");
@@ -22,7 +21,7 @@ export default function Register() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      await signUp(email, password, { username, full_name: fullName, roll_number: rollNumber });
+      await signUp(username, password, { full_name: fullName, roll_number: rollNumber });
       toast.success("Account created! You can now sign in.");
       navigate("/dashboard");
     } catch (err: any) {
@@ -80,14 +79,6 @@ export default function Register() {
                 <div className="relative">
                   <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input id="fullName" placeholder="Your full name" value={fullName} onChange={(e) => setFullName(e.target.value)} className={inputClass} required />
-                </div>
-              </div>
-
-              <div className="space-y-1.5">
-                <Label htmlFor="email" className={labelClass}>Email</Label>
-                <div className="relative">
-                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input id="email" type="email" placeholder="your@email.com" value={email} onChange={(e) => setEmail(e.target.value)} className={inputClass} required />
                 </div>
               </div>
 
