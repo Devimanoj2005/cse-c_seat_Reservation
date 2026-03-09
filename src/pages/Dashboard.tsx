@@ -39,7 +39,8 @@ export default function Dashboard() {
   const [selectedSeatId, setSelectedSeatId] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const today = format(new Date(), "yyyy-MM-dd");
-  const bookingOpen = true;
+  const currentHour = new Date().getHours();
+  const bookingOpen = currentHour >= 7 && currentHour < 9;
 
   const fetchData = useCallback(async () => {
     const [{ data: seatsData }, { data: bookingsData }, { data: profilesData }] = await Promise.all([
