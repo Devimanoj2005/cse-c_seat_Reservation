@@ -16,10 +16,12 @@ interface AuthContextType {
   profile: Profile | null;
   session: Session | null;
   loading: boolean;
-  signUp: (email: string, password: string, metadata: { username: string; full_name: string; roll_number: string }) => Promise<void>;
-  signIn: (email: string, password: string) => Promise<void>;
+  signUp: (username: string, password: string, metadata: { full_name: string; roll_number: string }) => Promise<void>;
+  signIn: (username: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
 }
+
+const toFakeEmail = (username: string) => `${username.toLowerCase().trim()}@csec-seats.app`;
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -60,16 +62,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signUp = async (email: string, password: string, metadata: { username: string; full_name: string; roll_number: string }) => {
+  const signUp = async (username: string, password: string, metadata: { full_name: string; roll_number: string }) => {
+    const email = toFakeEmail(username);
     const { error } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: metadata },
+      options: { data: { username, ...metadata } },
     });
     if (error) throw error;
   };
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (username: string, password: string) => {
+    const email = toFakeEmail(username);
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw error;
   };

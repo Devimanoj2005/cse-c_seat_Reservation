@@ -4,12 +4,12 @@ import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { GraduationCap, Mail, Lock, ArrowRight, Sparkles } from "lucide-react";
+import { GraduationCap, User, Lock, ArrowRight, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { signIn } = useAuth();
@@ -19,7 +19,7 @@ export default function Login() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      await signIn(email, password);
+      await signIn(username, password);
       toast.success("Welcome back!");
       navigate("/dashboard");
     } catch (err: any) {
@@ -31,12 +31,10 @@ export default function Login() {
 
   return (
     <div className="flex min-h-screen relative overflow-hidden">
-      {/* Background pattern */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-[hsl(var(--primary-glow)/0.05)]" />
       <div className="absolute top-20 -left-32 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
       <div className="absolute bottom-20 -right-32 w-96 h-96 bg-[hsl(var(--primary-glow)/.1)] rounded-full blur-3xl" />
 
-      {/* Left branding panel */}
       <div className="hidden lg:flex lg:w-1/2 relative items-center justify-center p-12">
         <motion.div
           initial={{ opacity: 0, x: -30 }}
@@ -62,7 +60,6 @@ export default function Login() {
         </motion.div>
       </div>
 
-      {/* Right form panel */}
       <div className="flex-1 flex items-center justify-center p-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -78,19 +75,19 @@ export default function Login() {
             </div>
 
             <h1 className="text-2xl font-bold tracking-tight mb-1">Welcome back</h1>
-            <p className="text-muted-foreground text-sm mb-8">Sign in to reserve your seat</p>
+            <p className="text-muted-foreground text-sm mb-8">Sign in with your username</p>
 
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Email</Label>
+                <Label htmlFor="username" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Username</Label>
                 <div className="relative">
-                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
-                    id="email"
-                    type="email"
-                    placeholder="your@email.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    id="username"
+                    type="text"
+                    placeholder="Your username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                     className="pl-11 h-12 bg-background/50 border-border/60 rounded-xl focus:ring-2 focus:ring-primary/20 transition-all"
                     required
                   />
